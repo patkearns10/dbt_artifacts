@@ -6,8 +6,6 @@
 
     {% if models != [] %}
         {% set model_values %}
-
-        with raw_datas as (
             select
                 {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(1) }},
                 {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(2) }},
@@ -50,9 +48,8 @@
                     {% endif %}
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
-            )
-        select * from raw_datas
-        where raw_datas.$10 not in (select checksum from development.dbt_pkearns__less_dbt_artifact.models)
+            ) a
+        where $10 not in (select checksum from development.dbt_pkearns__less_dbt_artifact.models)
 
         {% endset %}
         {{ model_values }}
