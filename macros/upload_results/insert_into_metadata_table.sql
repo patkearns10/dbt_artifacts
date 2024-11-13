@@ -27,6 +27,7 @@
     {% set insert_into_table_query %}
     insert into {{ relation }}
     {{ content }}
+    where $10 not in (select checksum from {{ relation }})
     {% endset %}
 
     {% do run_query(insert_into_table_query) %}

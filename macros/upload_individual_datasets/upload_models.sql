@@ -50,7 +50,6 @@
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
             ) a
-        where $10 not in (select checksum from development.dbt_pkearns__less_dbt_artifact.models)
 
         {% endset %}
         {{ model_values }}
