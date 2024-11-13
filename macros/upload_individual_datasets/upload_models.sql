@@ -49,6 +49,27 @@
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
+
+        as model_insert (
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(1) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(2) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(3) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(4) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(5) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(6) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(7)) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(8) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(11) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }}
+        )
+
+        where model_insert.checksum not in (select checksum from development.dbt_pkearns__less_dbt_artifact.models)
+
         {% endset %}
         {{ model_values }}
     {% else %} {{ return("") }}
