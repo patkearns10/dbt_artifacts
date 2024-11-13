@@ -46,6 +46,7 @@
                     {% else %}
                         '{{ tojson(model_copy) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}' {# all_results #}
                     {% endif %}
+                )
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
             ) a
