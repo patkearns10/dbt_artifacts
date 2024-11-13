@@ -24,7 +24,7 @@
                 {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
                 {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }},
                 {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }}
-            from ( values
+            from values
             {% for model in models -%}
                     {% set model_copy = model.copy() -%}
                     {% do model_copy.pop('raw_code', None) %}
@@ -48,7 +48,6 @@
                     {% else %}
                         '{{ tojson(model_copy) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}' {# all_results #}
                     {% endif %}
-                )
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
             )
