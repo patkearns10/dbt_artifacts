@@ -1,9 +1,9 @@
 {% macro upload_models(models) -%}
+    -- depends_on: {{ ref('models') }}
     {{ return(adapter.dispatch("get_models_dml_sql", "dbt_artifacts")(models)) }}
 {%- endmacro %}
 
 {% macro default__get_models_dml_sql(models) -%}
-    -- depends_on: {{ ref('models') }}
     {% set rel = load_relation(ref('models')) %}
     {% if models != [] %}
         {% set model_values %}
