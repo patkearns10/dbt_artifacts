@@ -4,7 +4,7 @@
 
 {% macro default__get_models_dml_sql(models) -%}
     -- depends_on: {{ ref('models') }}
-
+    {% set rel = load_relation(ref('models')) %}
     {% if models != [] %}
         {% set model_values %}
             select
@@ -51,7 +51,7 @@
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
             ) a
-        where $10 not in (select checksum from {{ ref('models')}})
+        where $10 not in (select checksum from {{ rel }})
         {% endset %}
         {{ model_values }}
     {% else %} {{ return("") }}
