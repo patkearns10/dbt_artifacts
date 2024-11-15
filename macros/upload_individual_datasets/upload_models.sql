@@ -3,6 +3,7 @@
 {%- endmacro %}
 
 {% macro default__get_models_dml_sql(models) -%}
+    -- depends_on: {{ ref('models') }}
 
     {% if models != [] %}
         {% set model_values %}
