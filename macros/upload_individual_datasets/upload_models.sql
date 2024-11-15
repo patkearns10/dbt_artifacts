@@ -1,10 +1,9 @@
 {% macro upload_models(models) -%}
-    -- depends_on: {{ ref('models') }}
     {{ return(adapter.dispatch("get_models_dml_sql", "dbt_artifacts")(models)) }}
 {%- endmacro %}
 
 {% macro default__get_models_dml_sql(models) -%}
-    {% set rel = load_relation(ref('models')) %}
+
     {% if models != [] %}
         {% set model_values %}
             select
@@ -51,7 +50,7 @@
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
             ) a
-        where $10 not in (select checksum from {{ rel }})
+        where $10 not in (select checksum from development.dbt_pkearns__less_dbt_artifact.models)
         {% endset %}
         {{ model_values }}
     {% else %} {{ return("") }}
