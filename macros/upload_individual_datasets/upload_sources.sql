@@ -19,7 +19,7 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(11)) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }}
-        from ( values
+        from values
         {% for source in sources -%}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
@@ -36,13 +36,23 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    '{{ source }}' {# all_results #}
+                    {{ dbt_utils.generate_surrogate_key(
+                        invocation_id,
+                        source.unique_id,
+                        run_started_at,
+                        source.database,
+                        source.schema,
+                        source.source_name,
+                        source.loader,
+                        source.name,
+                        source.identifier,
+                        source.loaded_at_field | replace("'","\\'"),
+                        tojson(source.freshness) | replace("'","\\'"),
+                    )}} {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
-        ) a
-        {# where HASH_AGG($12) not in (select HASH_AGG(all_results) from {{ dbt_artifacts.get_relation('sources') }}) #}
         {% endset %}
         {{ source_values }}
     {% else %} {{ return("") }}
