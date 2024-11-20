@@ -37,14 +37,14 @@
                     null
                 {% else %}
                     CONCAT(
-                        coalesce('{{ source.unique_id }}','null'),
-                        coalesce('{{ run_started_at }}','null'),
-                        coalesce('{{ source.database }}','null'),
-                        coalesce('{{ source.schema }}','null'),
-                        coalesce('{{ source.source_name }}','null'),
-                        coalesce('{{ source.loader }}','null'),
-                        coalesce('{{ source.name }}','null'),
-                        coalesce('{{ source.identifier }}','null')
+                        coalesce('{{ source.unique_id }}' ,'default'),
+                        coalesce('{{ run_started_at }}','default'),
+                        coalesce('{{ source.database }}','default'),
+                        coalesce('{{ source.schema }}','default'),
+                        coalesce('{{ source.source_name }}','default'),
+                        coalesce('{{ source.loader }}','default'),
+                        coalesce('{{ source.name }}','default'),
+                        coalesce('{{ source.identifier }}','default')
                     ) {# all_results #}
                 {% endif %}
             )
