@@ -23,7 +23,7 @@
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(14)) }}
-        from values
+        from ( values
         {% for snapshot in snapshots -%}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
@@ -47,6 +47,8 @@
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
+        ) a
+        where $10 not in (select checksum from {{ dbt_artifacts.get_relation('snapshots') }}) 
         {% endset %}
         {{ snapshot_values }}
     {% else %} {{ return("") }}
