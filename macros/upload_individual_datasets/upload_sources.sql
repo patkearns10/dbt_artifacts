@@ -36,7 +36,7 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    HASH(
+                    CONCAT(
                         '{{ source.unique_id }}',
                         '{{ run_started_at }}',
                         '{{ source.database }}',
