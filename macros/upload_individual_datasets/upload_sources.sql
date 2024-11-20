@@ -44,7 +44,7 @@
                         coalesce('{{ source.source_name }}','null'),
                         coalesce('{{ source.loader }}','null'),
                         coalesce('{{ source.name }}','null'),
-                        coalesce('{{ source.identifier }}''null')
+                        coalesce('{{ source.identifier }}','null')
                     ) {# all_results #}
                 {% endif %}
             )
