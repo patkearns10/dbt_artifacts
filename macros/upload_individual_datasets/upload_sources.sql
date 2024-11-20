@@ -36,7 +36,7 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    HASH('{{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}') {# all_results #}
+                    HASH({{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}) {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
