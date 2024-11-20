@@ -36,13 +36,13 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    HASH({{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}) {# all_results #}
+                    HASH('{{ invocation_id }}')) {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
         ) a
-        where $12 not in (select HASH(all_results) from {{ dbt_artifacts.get_relation('sources') }})
+        where $12 not in (select all_results from {{ dbt_artifacts.get_relation('sources') }})
         {% endset %}
         {{ source_values }}
     {% else %} {{ return("") }}
