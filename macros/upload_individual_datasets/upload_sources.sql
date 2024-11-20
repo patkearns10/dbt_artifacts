@@ -38,7 +38,6 @@
                 {% else %}
                     {{ dbt_utils.generate_surrogate_key(
                         [
-                        invocation_id,
                         source.unique_id,
                         run_started_at,
                         source.database,
