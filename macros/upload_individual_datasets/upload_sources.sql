@@ -36,13 +36,13 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    '{{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}' {# all_results #}
+                    HASH('{{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}') {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
         ) a
-        where HASH_AGG($12) not in (select HASH_AGG(all_results) from {{ dbt_artifacts.get_relation('sources') }})
+        where $12 not in (select HASH(all_results) from {{ dbt_artifacts.get_relation('sources') }})
         {% endset %}
         {{ source_values }}
     {% else %} {{ return("") }}
