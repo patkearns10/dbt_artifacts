@@ -36,7 +36,7 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    HASH('{{ invocation_id }}')) {# all_results #}
+                    HASH('{{ invocation_id }}') {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
