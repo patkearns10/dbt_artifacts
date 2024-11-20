@@ -44,7 +44,7 @@
                         '{{ source.source_name }}',
                         '{{ source.loader }}',
                         '{{ source.name }}',
-                        '{{ source.identifier }}',
+                        '{{ source.identifier }}'
                     ) {# all_results #}
                 {% endif %}
             )
