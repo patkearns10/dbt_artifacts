@@ -38,17 +38,17 @@
                 {% else %}
                     {{ dbt_utils.generate_surrogate_key(
                         [
-                        invocation_id,
-                        source.unique_id,
-                        run_started_at,
-                        source.database,
-                        source.schema,
-                        source.source_name,
-                        source.loader,
-                        source.name,
-                        source.identifier,
-                        source.loaded_at_field | replace("'","\\'"),
-                        tojson(source.freshness) | replace("'","\\'")
+                        hash(invocation_id),
+                        hash(source.unique_id),
+                        hash(run_started_at),
+                        hash(source.database),
+                        hash(source.schema),
+                        hash(source.source_name),
+                        hash(source.loader),
+                        hash(source.name),
+                        hash(source.identifier),
+                        hash(source.loaded_at_field),
+                        hash(tojson(source.freshness))
                         ]
                     )}} {# all_results #}
                 {% endif %}
