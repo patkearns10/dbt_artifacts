@@ -50,7 +50,7 @@
                 {%- if not loop.last %},{%- endif %}
             {%- endfor %}
             ) a
-        where $10 not in (select checksum from {{ get_relation('models') }})
+        where $10 not in (select checksum from {{ dbt_artifacts.get_relation('models') }})
         {% endset %}
         {{ model_values }}
     {% else %} {{ return("") }}
