@@ -37,6 +37,7 @@
                     null
                 {% else %}
                     {{ dbt_utils.generate_surrogate_key(
+                        [
                         invocation_id,
                         source.unique_id,
                         run_started_at,
@@ -47,7 +48,8 @@
                         source.name,
                         source.identifier,
                         source.loaded_at_field | replace("'","\\'"),
-                        tojson(source.freshness) | replace("'","\\'"),
+                        tojson(source.freshness) | replace("'","\\'")
+                        ]
                     )}} {# all_results #}
                 {% endif %}
             )
