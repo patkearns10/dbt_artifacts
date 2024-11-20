@@ -36,19 +36,16 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    {{ dbt_utils.generate_surrogate_key(
-                        [
-                        source.unique_id,
-                        run_started_at,
-                        source.database,
-                        source.schema,
-                        source.source_name,
-                        source.loader,
-                        source.name,
-                        source.identifier,
-                        source.loaded_at_field
-                        ]
-                    )}} {# all_results #}
+                    HASH(
+                        '{{ source.unique_id }}',
+                        '{{ run_started_at }}',
+                        '{{ source.database }}',
+                        '{{ source.schema }}',
+                        '{{ source.source_name }}',
+                        '{{ source.loader }}',
+                        '{{ source.name }}',
+                        '{{ source.identifier }}',
+                    ) {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
