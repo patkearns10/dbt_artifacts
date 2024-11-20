@@ -36,15 +36,7 @@
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
-                    CONCAT(
-                        coalesce($2, 'default'),
-                        coalesce($4, 'default'),
-                        coalesce($5, 'default'),
-                        coalesce($6, 'default'),
-                        coalesce($7, 'default'),
-                        coalesce($8, 'default'),
-                        coalesce($9, 'default')
-                    ) {# all_results #}
+                    '{{ source.source_name }}' {# all_results #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
