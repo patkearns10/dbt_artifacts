@@ -42,7 +42,7 @@
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
         ) a
-        where hash($12) not in (select hash(all_results) from {{ dbt_artifacts.get_relation('sources') }})
+        where sha1($12) not in (select sha1(all_results) from {{ dbt_artifacts.get_relation('sources') }})
         {% endset %}
         {{ source_values }}
     {% else %} {{ return("") }}
