@@ -19,7 +19,7 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(11)) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(12) }}
-        from values
+        from ( values
         {% for source in sources -%}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
@@ -33,10 +33,12 @@
                 '{{ source.identifier }}', {# identifier #}
                 '{{ source.loaded_at_field | replace("'","\\'") }}', {# loaded_at_field #}
                 '{{ tojson(source.freshness) | replace("'","\\'") }}', {# freshness #}
-                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}' {# all_results #}
+                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}' {# checksum #}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
+        ) a
+        where $12 not in (select checksum from {{ dbt_artifacts.get_relation('sources') }})
         {% endset %}
         {{ source_values }}
     {% else %} {{ return("") }}
