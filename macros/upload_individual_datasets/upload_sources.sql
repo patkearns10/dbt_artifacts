@@ -33,11 +33,7 @@
                 '{{ source.identifier }}', {# identifier #}
                 '{{ source.loaded_at_field | replace("'","\\'") }}', {# loaded_at_field #}
                 '{{ tojson(source.freshness) | replace("'","\\'") }}', {# freshness #}
-                {% if var('dbt_artifacts_exclude_all_results', false) %}
-                    null
-                {% else %}
-                    '{{ source.source_name }}' {# all_results #}
-                {% endif %}
+                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}' {# all_results #}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
