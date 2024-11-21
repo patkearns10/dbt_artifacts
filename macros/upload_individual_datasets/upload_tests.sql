@@ -16,7 +16,7 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(7) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(8)) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }}
-        from values
+        from ( values
         {% for test in tests -%}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
@@ -32,6 +32,8 @@
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
+        ) a
+        where $9 not in (select checksum from {{ dbt_artifacts.get_relation('tests') }})
         {% endset %}
         {{ test_values }}
     {% else %} {{ return("") }}
