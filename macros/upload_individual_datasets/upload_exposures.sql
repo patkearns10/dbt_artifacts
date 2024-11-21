@@ -37,7 +37,7 @@
                 '{{ exposure.package_name }}', {# package_name #}
                 '{{ tojson(exposure.depends_on.nodes) }}', {# depends_on_nodes #}
                 '{{ tojson(exposure.tags) }}', {# tags #}
-                '{{ exposure.unique_id | replace("'","\\'") }}'||'|'||'{{ exposure.name | replace("'","\\'") }}'||'|'||'{{ exposure.type }}'||'|'||'{{ exposure.maturity }}'||'|'||'{{ exposure.package_name }}' {# checksum #}
+                '{{ exposure.unique_id | replace("'","\\'") }}'||'|'||'{{ exposure.name | replace("'","\\'") }}'||'|'||'{{ exposure.type }}'||'|'||'{{ exposure.maturity }}'||'|'||'{{ exposure.package_name }}'||'|'||'{{ tojson(exposure.depends_on.nodes) }}' {# checksum #}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
