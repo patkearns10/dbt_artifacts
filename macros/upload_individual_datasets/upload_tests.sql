@@ -15,7 +15,7 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(6) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(7) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(8)) }},
-            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(9)) }}
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }}
         from values
         {% for test in tests -%}
             (
@@ -27,11 +27,8 @@
                 '{{ test.package_name }}', {# package_name #}
                 '{{ test.original_file_path | replace('\\', '\\\\') }}', {# test_path #}
                 '{{ tojson(test.tags) }}', {# tags #}
-                {% if var('dbt_artifacts_exclude_all_results', false) %}
-                    null
-                {% else %}
-                    '{{ tojson(test) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}' {# all_fields #}
-                {% endif %}
+                '{{ test.unique_id }}'||'|'||'{{ test.name }}'||'|'||'{{ tojson(test.depends_on.nodes) }}'||'|'||'{{ test.package_name }}'||'|'||'{{ test.original_file_path | replace('\\', '\\\\') }}'||'|'||'{{ tojson(test.tags) }}' {# checksum #}
+
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
