@@ -20,6 +20,6 @@ select
     , cast(null as {{ type_string() }}) as package_name
     , cast(null as {{ type_array() }}) as depends_on_nodes
     , cast(null as {{ type_array() }}) as tags
-    , cast(null as {{ type_json() }}) as all_results
+    , cast(null as {{ type_string() }}) as checksum
 from dummy_cte
 where 1 = 0
