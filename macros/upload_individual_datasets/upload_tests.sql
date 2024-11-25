@@ -5,17 +5,40 @@
 {% macro default__get_tests_dml_sql(tests) -%}
 
     {% if tests != [] %}
+
+        {%- set test_name = '' -%}
+        {%- set test_type = '' -%}
+        {%- set column_name = '' -%}
+
+        {%- if result.node.test_metadata is defined -%}
+        {%- set test_name = result.node.test_metadata.name -%}
+        {%- set test_type = 'generic' -%}
+        
+        {%- if test_name == 'relationships' -%}
+            {%- set column_name = result.node.test_metadata.kwargs.field ~ ',' ~ result.node.test_metadata.kwargs.column_name -%}
+        {%- else -%}
+            {%- set column_name = result.node.test_metadata.kwargs.column_name -%}
+        {%- endif -%}
+        {%- elif result.node.name is defined -%}
+        {%- set test_name = result.node.name -%}
+        {%- set test_type = 'singular' -%}
+        {%- endif %}
+
         {% set test_values %}
         select
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(1) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(2) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(3) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(4) }},
-            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(5)) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(5) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(6) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(7) }},
-            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(8)) }},
-            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }}
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(8) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(9)) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(11) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }}
         from ( values
         {% for test in tests -%}
             (
@@ -23,17 +46,20 @@
                 '{{ test.unique_id }}', {# node_id #}
                 '{{ run_started_at }}', {# run_started_at #}
                 '{{ test.name }}', {# name #}
+                '{{ test_name }}',  {# test_name #}
+                '{{ result.node.config.severity }}', {# test_severity_config #}
+                '{{ column_name|escape }}', {# column_names #}
+                '{{ test_type }}', {# test_type #}
                 '{{ tojson(test.depends_on.nodes) }}', {# depends_on_nodes #}
                 '{{ test.package_name }}', {# package_name #}
                 '{{ test.original_file_path | replace('\\', '\\\\') }}', {# test_path #}
                 '{{ tojson(test.tags) }}', {# tags #}
                 '{{ test.unique_id }}'||'|'||'{{ test.name }}'||'|'||'{{ tojson(test.depends_on.nodes) }}'||'|'||'{{ test.package_name }}'||'|'||'{{ test.original_file_path | replace('\\', '\\\\') }}'||'|'||'{{ tojson(test.tags) }}' {# checksum #}
-
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
         ) a
-        where $9 not in (select checksum from {{ dbt_artifacts.get_relation('tests') }})
+        where $13 not in (select checksum from {{ dbt_artifacts.get_relation('tests') }})
         {% endset %}
         {{ test_values }}
     {% else %} {{ return("") }}
