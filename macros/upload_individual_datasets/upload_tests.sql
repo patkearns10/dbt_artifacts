@@ -5,25 +5,6 @@
 {% macro default__get_tests_dml_sql(tests) -%}
 
     {% if tests != [] %}
-
-        {%- set test_name = '' -%}
-        {%- set test_type = '' -%}
-        {%- set column_name = '' -%}
-
-        {%- if test.test_metadata is defined -%}
-        {%- set test_name = test.test_metadata.name -%}
-        {%- set test_type = 'generic' -%}
-        
-        {%- if test_name == 'relationships' -%}
-            {%- set column_name = test.test_metadata.kwargs.field ~ ',' ~ test.test_metadata.kwargs.column_name -%}
-        {%- else -%}
-            {%- set column_name = test.test_metadata.kwargs.column_name -%}
-        {%- endif -%}
-        {%- elif test.name is defined -%}
-        {%- set test_name = test.name -%}
-        {%- set test_type = 'singular' -%}
-        {%- endif %}
-
         {% set test_values %}
         select
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(1) }},
@@ -41,6 +22,23 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }}
         from ( values
         {% for test in tests -%}
+            {%- set test_name = '' -%}
+            {%- set test_type =  '' -%}
+            {%- set column_name = '' -%}
+
+            {%- if test.test_metadata is defined -%}
+                {%- set test_name = test.test_metadata.name -%}
+                {%- set test_type = 'generic' -%}
+                
+                {%- if test_name == 'relationships' -%}
+                    {%- set column_name = test.test_metadata.kwargs.field ~ ',' ~ test.test_metadata.kwargs.column_name -%}
+                {%- else -%}
+                    {%- set column_name = test.test_metadata.kwargs.column_name -%}
+                {%- endif -%}
+            {%- elif test.name is defined -%}
+                {%- set test_name = test.name -%}
+                {%- set test_type = 'singular' -%}
+            {%- endif %}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
                 '{{ test.unique_id }}', {# node_id #}
