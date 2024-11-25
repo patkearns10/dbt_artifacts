@@ -10,17 +10,17 @@
         {%- set test_type = '' -%}
         {%- set column_name = '' -%}
 
-        {%- if result.node.test_metadata is defined -%}
-        {%- set test_name = result.node.test_metadata.name -%}
+        {%- if test.test_metadata is defined -%}
+        {%- set test_name = test.test_metadata.name -%}
         {%- set test_type = 'generic' -%}
         
         {%- if test_name == 'relationships' -%}
-            {%- set column_name = result.node.test_metadata.kwargs.field ~ ',' ~ result.node.test_metadata.kwargs.column_name -%}
+            {%- set column_name = test.test_metadata.kwargs.field ~ ',' ~ test.test_metadata.kwargs.column_name -%}
         {%- else -%}
-            {%- set column_name = result.node.test_metadata.kwargs.column_name -%}
+            {%- set column_name = test.test_metadata.kwargs.column_name -%}
         {%- endif -%}
-        {%- elif result.node.name is defined -%}
-        {%- set test_name = result.node.name -%}
+        {%- elif test.name is defined -%}
+        {%- set test_name = test.name -%}
         {%- set test_type = 'singular' -%}
         {%- endif %}
 
@@ -47,7 +47,7 @@
                 '{{ run_started_at }}', {# run_started_at #}
                 '{{ test.name }}', {# name #}
                 '{{ test_name }}',  {# test_name #}
-                '{{ result.node.config.severity }}', {# test_severity_config #}
+                '{{ test.config.severity }}', {# test_severity_config #}
                 '{{ column_name|escape }}', {# column_names #}
                 '{{ test_type }}', {# test_type #}
                 '{{ tojson(test.depends_on.nodes) }}', {# depends_on_nodes #}

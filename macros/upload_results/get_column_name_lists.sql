@@ -20,7 +20,7 @@
             package_name,
             depends_on_nodes,
             tags,
-            all_results
+            checksum
         )
 
     {% elif dataset == "invocations" %}
@@ -192,7 +192,7 @@
             identifier,
             loaded_at_field,
             freshness,
-            all_results
+            checksum
         )
 
     {% elif dataset == "test_executions" %}
@@ -220,6 +220,10 @@
             node_id,
             run_started_at,
             name,
+            test_name,
+            test_severity_config,
+            column_names,
+            test_type,
             depends_on_nodes,
             package_name,
             test_path,
