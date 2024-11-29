@@ -20,7 +20,6 @@ select
     cast(null as {{ type_json() }}) as all_results,
     cast(null as {{ type_string() }}) as dbt_cloud_environment_name,
     cast(null as {{ type_string() }}) as dbt_cloud_environment_type
-    {% endif %}
 from dummy_cte
 where 1 = 0
 
