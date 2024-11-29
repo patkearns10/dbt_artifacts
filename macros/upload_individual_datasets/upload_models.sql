@@ -41,8 +41,7 @@
                     '{{ tojson(model_copy.depends_on.nodes) | replace('\\', '\\\\') }}', {# depends_on_nodes #}
                     '{{ model_copy.package_name }}', {# package_name #}
                     '{{ model_copy.original_file_path | replace('\\', '\\\\') }}', {# path #}
-                    '{{ model_copy.checksum.checksum  | replace('\\', '\\\\') }}', {# checksum #}
-                    '{{ model_copy.checksum.checksum  | replace('\\', '\\\\') }}'{% if var('dbt_artifacts_exclude_all_results', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {% endif %}, {# checksum #} 
+                    '{{ model_copy.checksum.checksum  | replace('\\', '\\\\') }}'{% if var('dbt_artifacts_exclude_all_results', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}'{% endif %}, {# checksum #} 
                     '{{ model_copy.config.materialized }}', {# materialization #}
                     '{{ tojson(model_copy.tags) }}', {# tags #}
                     '{{ tojson(model_copy.config.meta) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}', {# meta #}
