@@ -436,3 +436,27 @@ For a test, to which column(s) is the test applied to.
 What type of test is this, e.g. 'generic' or 'singular'
 
 {% enddocs %}
+
+{% docs dbt_cloud_environment_name %}
+
+The name of the dbt Cloud environment in which dbt is running.
+
+{% enddocs %}
+
+{% docs dbt_cloud_environment_type %}
+
+The type of dbt Cloud environment in which dbt is running, e.g. 'dev', 'staging', or 'prod'.
+
+{% enddocs %}
+
+{% docs dbt_cloud_environment_id %}
+
+The ID of the environment for this run
+
+{% enddocs %}
+
+{% docs dbt_cloud_account_id %}
+
+The ID of the dbt Cloud account for this run
+
+{% enddocs %}

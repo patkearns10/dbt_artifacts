@@ -22,6 +22,10 @@
             tags,
             checksum,
             all_results
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , dbt_cloud_environment_name
+                , dbt_cloud_environment_type 
+            {% endif %}
         )
 
     {% elif dataset == "invocations" %}
@@ -42,6 +46,10 @@
             dbt_cloud_run_id,
             dbt_cloud_run_reason_category,
             dbt_cloud_run_reason,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type,
+            dbt_cloud_environment_id,
+            dbt_cloud_account_id,
             env_vars,
             dbt_vars,
             invocation_args,
@@ -92,6 +100,10 @@
             meta,
             alias,
             all_results
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , dbt_cloud_environment_name
+                , dbt_cloud_environment_type 
+            {% endif %}
         )
 
     {% elif dataset == "seed_executions" %}
@@ -133,6 +145,10 @@
             meta,
             alias,
             all_results
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , dbt_cloud_environment_name
+                , dbt_cloud_environment_type 
+            {% endif %}
         )
 
     {% elif dataset == "snapshot_executions" %}
@@ -176,6 +192,10 @@
             meta,
             alias,
             all_results
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , dbt_cloud_environment_name
+                , dbt_cloud_environment_type 
+            {% endif %}
         )
 
     {% elif dataset == "sources" %}
@@ -195,6 +215,10 @@
             freshness,
             checksum,
             all_results
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , dbt_cloud_environment_name
+                , dbt_cloud_environment_type 
+            {% endif %}
         )
 
     {% elif dataset == "test_executions" %}
@@ -231,6 +255,10 @@
             test_path,
             tags,
             all_results
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , dbt_cloud_environment_name
+                , dbt_cloud_environment_type 
+            {% endif %}
         )
 
     {% else %}

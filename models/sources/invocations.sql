@@ -22,6 +22,10 @@ select
     , cast(null as {{ type_string() }}) as dbt_cloud_run_id
     , cast(null as {{ type_string() }}) as dbt_cloud_run_reason_category
     , cast(null as {{ type_string() }}) as dbt_cloud_run_reason
+    , cast(null as {{ type_string() }}) as dbt_cloud_environment_name
+    , cast(null as {{ type_string() }}) as dbt_cloud_environment_type
+    , cast(null as {{ type_string() }}) as dbt_cloud_environment_id
+    , cast(null as {{ type_string() }}) as dbt_cloud_account_id
     , cast(null as {{ type_json() }}) as env_vars
     , cast(null as {{ type_json() }}) as dbt_vars
     , cast(null as {{ type_json() }}) as invocation_args

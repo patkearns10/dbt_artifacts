@@ -20,6 +20,10 @@
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(11)) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(12) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }}
+            {% if var('dbt_artifacts_environment_aware', false) %}
+                , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}, ''),
+                , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(15) }}, ''),
+            {% endif %}
         from ( values
         {% for source in sources -%}
             (
@@ -34,11 +38,15 @@
                 '{{ source.identifier }}', {# identifier #}
                 '{{ source.loaded_at_field | replace("'","\\'") }}', {# loaded_at_field #}
                 '{{ tojson(source.freshness) | replace("'","\\'") }}', {# freshness #}
-                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}', {# checksum #}
+                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}'{% if var('dbt_artifacts_exclude_all_results', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}'{% endif %}, {# checksum #}
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
                     '{{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}' {# all_results #}
+                {% endif %}
+                {% if var('dbt_artifacts_environment_aware', false) %}
+                    , '{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}' {# dbt_cloud_environment_name #}
+                    , '{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {# dbt_cloud_environment_type #}
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}

@@ -22,6 +22,11 @@
                 {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
                 {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }},
                 {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }}
+                {% if var('dbt_artifacts_environment_aware', false) %}
+                    , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(16) }}, ''),
+                    , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(17) }}, ''),
+                {% endif %}
+
             from ( values
             {% for model in models -%}
                     {% set model_copy = model.copy() -%}
@@ -37,6 +42,7 @@
                     '{{ model_copy.package_name }}', {# package_name #}
                     '{{ model_copy.original_file_path | replace('\\', '\\\\') }}', {# path #}
                     '{{ model_copy.checksum.checksum  | replace('\\', '\\\\') }}', {# checksum #}
+                    '{{ model_copy.checksum.checksum  | replace('\\', '\\\\') }}'{% if var('dbt_artifacts_exclude_all_results', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {% endif %}, {# checksum #} 
                     '{{ model_copy.config.materialized }}', {# materialization #}
                     '{{ tojson(model_copy.tags) }}', {# tags #}
                     '{{ tojson(model_copy.config.meta) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}', {# meta #}
@@ -45,6 +51,10 @@
                         null
                     {% else %}
                         '{{ tojson(model_copy) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}' {# all_results #}
+                    {% endif %}
+                    {% if var('dbt_artifacts_environment_aware', false) %}
+                        , '{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}' {# dbt_cloud_environment_name #}
+                        , '{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {# dbt_cloud_environment_type #}
                     {% endif %}
                 )
                 {%- if not loop.last %},{%- endif %}
