@@ -412,3 +412,51 @@ Response provided by the adapter as JSON.
 All results as a JSON blob
 
 {% enddocs %}
+
+{% docs test_name %}
+
+Short name for the test,  e.g. 'unique' or 'not null' test
+
+{% enddocs %}
+
+{% docs test_severity_config %}
+
+The configuration setting for test severity, e.g. 'ERROR' or 'WARN'
+
+{% enddocs %}
+
+{% docs column_names %}
+
+For a test, to which column(s) is the test applied to.
+
+{% enddocs %}
+
+{% docs test_type %}
+
+What type of test is this, e.g. 'generic' or 'singular'
+
+{% enddocs %}
+
+{% docs dbt_cloud_environment_name %}
+
+The name of the dbt Cloud environment in which dbt is running.
+
+{% enddocs %}
+
+{% docs dbt_cloud_environment_type %}
+
+The type of dbt Cloud environment in which dbt is running, e.g. 'dev', 'staging', or 'prod'.
+
+{% enddocs %}
+
+{% docs dbt_cloud_environment_id %}
+
+The ID of the environment for this run
+
+{% enddocs %}
+
+{% docs dbt_cloud_account_id %}
+
+The ID of the dbt Cloud account for this run
+
+{% enddocs %}

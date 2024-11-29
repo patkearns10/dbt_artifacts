@@ -25,7 +25,7 @@
 {% macro snowflake__insert_into_metadata_table(relation, fields, content) -%}
 
     {% set insert_into_table_query %}
-    insert into {{ relation }} {{ fields }}
+    insert into {{ relation }}
     {{ content }}
     {% endset %}
 

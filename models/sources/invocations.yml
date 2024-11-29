@@ -34,6 +34,14 @@ models:
         description: '{{ doc("dbt_cloud_run_reason_category") }}'
       - name: dbt_cloud_run_reason
         description: '{{ doc("dbt_cloud_run_reason") }}'
+      - name: dbt_cloud_environment_name
+        description: '{{ doc("dbt_cloud_environment_name") }}'
+      - name: dbt_cloud_environment_type
+        description: '{{ doc("dbt_cloud_environment_type") }}'
+      - name: dbt_cloud_environment_id
+        description: '{{ doc("dbt_cloud_environment_id") }}'
+      - name: dbt_cloud_account_id
+        description: '{{ doc("dbt_cloud_account_id") }}'
       - name: env_vars
         description: '{{ doc("env_vars") }}'
       - name: dbt_vars

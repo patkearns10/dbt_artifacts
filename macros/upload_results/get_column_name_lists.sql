@@ -20,7 +20,10 @@
             package_name,
             depends_on_nodes,
             tags,
-            all_results
+            checksum,
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% elif dataset == "invocations" %}
@@ -41,6 +44,10 @@
             dbt_cloud_run_id,
             dbt_cloud_run_reason_category,
             dbt_cloud_run_reason,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type,
+            dbt_cloud_environment_id,
+            dbt_cloud_account_id,
             env_vars,
             dbt_vars,
             invocation_args,
@@ -90,7 +97,9 @@
             tags,
             meta,
             alias,
-            all_results
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% elif dataset == "seed_executions" %}
@@ -131,7 +140,9 @@
             checksum,
             meta,
             alias,
-            all_results
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type 
         )
 
     {% elif dataset == "snapshot_executions" %}
@@ -174,7 +185,9 @@
             strategy,
             meta,
             alias,
-            all_results
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% elif dataset == "sources" %}
@@ -192,7 +205,10 @@
             identifier,
             loaded_at_field,
             freshness,
-            all_results
+            checksum,
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type 
         )
 
     {% elif dataset == "test_executions" %}
@@ -220,11 +236,17 @@
             node_id,
             run_started_at,
             name,
+            test_name,
+            test_severity_config,
+            column_names,
+            test_type,
             depends_on_nodes,
             package_name,
             test_path,
             tags,
-            all_results
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% else %}
