@@ -32,7 +32,7 @@
                 '{{ seed.name }}', {# name #}
                 '{{ seed.package_name }}', {# package_name #}
                 '{{ seed.original_file_path | replace('\\', '\\\\') }}', {# path #}
-                '{{ seed.checksum.checksum | replace('\\', '\\\\') }}'{% if var('dbt_artifacts_exclude_all_results', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {% endif %}, {# checksum #}
+                '{{ seed.checksum.checksum | replace('\\', '\\\\') }}'{% if var('dbt_artifacts_environment_aware', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {% endif %}, {# checksum #}
                 '{{ tojson(seed.config.meta) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}', {# meta #}
                 '{{ seed.alias }}', {# alias #}
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
