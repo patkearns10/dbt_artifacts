@@ -20,7 +20,8 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(11) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
-            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }}
         from ( values
         {% for exposure in exposures -%}
             (
@@ -37,7 +38,12 @@
                 '{{ exposure.package_name }}', {# package_name #}
                 '{{ tojson(exposure.depends_on.nodes) }}', {# depends_on_nodes #}
                 '{{ tojson(exposure.tags) }}', {# tags #}
-                '{{ exposure.unique_id | replace("'","\\'") }}'||'|'||'{{ exposure.name | replace("'","\\'") }}'||'|'||'{{ exposure.type }}'||'|'||'{{ exposure.maturity }}'||'|'||'{{ exposure.package_name }}'||'|'||'{{ tojson(exposure.depends_on.nodes) }}' {# checksum #}
+                '{{ exposure.unique_id | replace("'","\\'") }}'||'|'||'{{ exposure.name | replace("'","\\'") }}'||'|'||'{{ exposure.type }}'||'|'||'{{ exposure.maturity }}'||'|'||'{{ exposure.package_name }}'||'|'||'{{ tojson(exposure.depends_on.nodes) }}', {# checksum #}
+                {% if var('dbt_artifacts_exclude_all_results', false) %}
+                    null
+                {% else %}
+                    '{{ tojson(exposure) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}' {# all_results #}
+                {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}

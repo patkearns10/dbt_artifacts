@@ -20,5 +20,6 @@ select
     , cast(null as {{ type_string() }}) as test_path
     , cast(null as {{ type_array() }}) as tags
     , cast(null as {{ type_string() }}) as checksum
+    , cast(null as {{ type_json() }}) as all_results
 from dummy_cte
 where 1 = 0

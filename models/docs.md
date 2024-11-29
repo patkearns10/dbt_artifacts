@@ -412,3 +412,27 @@ Response provided by the adapter as JSON.
 All results as a JSON blob
 
 {% enddocs %}
+
+{% docs test_name %}
+
+Short name for the test,  e.g. 'unique' or 'not null' test
+
+{% enddocs %}
+
+{% docs test_severity_config %}
+
+The configuration setting for test severity, e.g. 'ERROR' or 'WARN'
+
+{% enddocs %}
+
+{% docs column_names %}
+
+For a test, to which column(s) is the test applied to.
+
+{% enddocs %}
+
+{% docs test_type %}
+
+What type of test is this, e.g. 'generic' or 'singular'
+
+{% enddocs %}

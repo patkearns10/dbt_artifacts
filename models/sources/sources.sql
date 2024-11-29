@@ -20,6 +20,7 @@ select
     {% else %}, cast(null as {{ type_json() }}) as freshness
     {% endif %},
     cast(null as {{ type_string() }}) as checksum
+    , cast(null as {{ type_json() }}) as all_results
 from dummy_cte
 where 1 = 0
 

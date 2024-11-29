@@ -18,7 +18,8 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(11)) }},
-            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(12) }}
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(12) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }}
         from ( values
         {% for source in sources -%}
             (
@@ -33,7 +34,12 @@
                 '{{ source.identifier }}', {# identifier #}
                 '{{ source.loaded_at_field | replace("'","\\'") }}', {# loaded_at_field #}
                 '{{ tojson(source.freshness) | replace("'","\\'") }}', {# freshness #}
-                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}' {# checksum #}
+                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}', {# checksum #}
+                {% if var('dbt_artifacts_exclude_all_results', false) %}
+                    null
+                {% else %}
+                    '{{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}' {# all_results #}
+                {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}

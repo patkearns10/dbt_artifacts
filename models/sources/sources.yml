@@ -28,3 +28,5 @@ models:
         description: '{{ doc("freshness") }}'
       - name: checksum
         description: '{{ doc("checksum") }}'
+      - name: all_results
+        description: '{{ doc("all_results") }}'

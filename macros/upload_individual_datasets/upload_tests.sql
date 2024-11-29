@@ -19,7 +19,8 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(11) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
-            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }}
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(14)) }}
         from ( values
         {% for test in tests -%}
             {%- set test_name = '' -%}
@@ -52,7 +53,12 @@
                 '{{ test.package_name }}', {# package_name #}
                 '{{ test.original_file_path | replace('\\', '\\\\') }}', {# test_path #}
                 '{{ tojson(test.tags) }}', {# tags #}
-                '{{ test.unique_id }}'||'|'||'{{ test.name }}'||'|'||'{{ tojson(test.depends_on.nodes) }}'||'|'||'{{ test.package_name }}'||'|'||'{{ test.original_file_path | replace('\\', '\\\\') }}'||'|'||'{{ tojson(test.tags) }}' {# checksum #}
+                '{{ test.unique_id }}'||'|'||'{{ test.name }}'||'|'||'{{ tojson(test.depends_on.nodes) }}'||'|'||'{{ test.package_name }}'||'|'||'{{ test.original_file_path | replace('\\', '\\\\') }}'||'|'||'{{ tojson(test.tags) }}', {# checksum #}
+                {% if var('dbt_artifacts_exclude_all_results', false) %}
+                    null
+                {% else %}
+                    '{{ tojson(test) | replace("\\", "\\\\") | replace("'","\\'") | replace('"', '\\"') }}' {# all_results #}
+                {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
