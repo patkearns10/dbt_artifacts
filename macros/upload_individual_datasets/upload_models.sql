@@ -23,8 +23,8 @@
                 {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }},
                 {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }}
                 {% if var('dbt_artifacts_environment_aware', false) %}
-                    , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(16) }}, ''),
-                    , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(17) }}, ''),
+                    , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(16) }}, '')
+                    , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(17) }}, '')
                 {% endif %}
 
             from ( values
