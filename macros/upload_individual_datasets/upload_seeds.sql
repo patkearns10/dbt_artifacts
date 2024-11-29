@@ -18,11 +18,9 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(10)) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(11) }},
-            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }}
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }}, '')
-                , nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}, '')
-            {% endif %}
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
+            nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }}, ''),
+            nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}, '')
         from ( values
         {% for seed in seeds -%}
             (
@@ -45,6 +43,9 @@
                 {% if var('dbt_artifacts_environment_aware', false) %}
                     , '{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}' {# dbt_cloud_environment_name #}
                     , '{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {# dbt_cloud_environment_type #}
+                {% else %}
+                    , null
+                    , null
                 {% endif %}
             )
             {%- if not loop.last %},{%- endif %}

@@ -21,11 +21,9 @@
             depends_on_nodes,
             tags,
             checksum,
-            all_results
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , dbt_cloud_environment_name
-                , dbt_cloud_environment_type 
-            {% endif %}
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% elif dataset == "invocations" %}
@@ -99,11 +97,9 @@
             tags,
             meta,
             alias,
-            all_results
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , dbt_cloud_environment_name
-                , dbt_cloud_environment_type 
-            {% endif %}
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% elif dataset == "seed_executions" %}
@@ -144,11 +140,9 @@
             checksum,
             meta,
             alias,
-            all_results
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , dbt_cloud_environment_name
-                , dbt_cloud_environment_type 
-            {% endif %}
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type 
         )
 
     {% elif dataset == "snapshot_executions" %}
@@ -191,11 +185,9 @@
             strategy,
             meta,
             alias,
-            all_results
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , dbt_cloud_environment_name
-                , dbt_cloud_environment_type 
-            {% endif %}
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% elif dataset == "sources" %}
@@ -214,11 +206,9 @@
             loaded_at_field,
             freshness,
             checksum,
-            all_results
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , dbt_cloud_environment_name
-                , dbt_cloud_environment_type 
-            {% endif %}
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type 
         )
 
     {% elif dataset == "test_executions" %}
@@ -254,11 +244,9 @@
             package_name,
             test_path,
             tags,
-            all_results
-            {% if var('dbt_artifacts_environment_aware', false) %}
-                , dbt_cloud_environment_name
-                , dbt_cloud_environment_type 
-            {% endif %}
+            all_results,
+            dbt_cloud_environment_name,
+            dbt_cloud_environment_type
         )
 
     {% else %}

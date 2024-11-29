@@ -20,10 +20,8 @@ select
     cast(null as {{ type_array() }}) as tags,
     cast(null as {{ type_json() }}) as meta,
     cast(null as {{ type_string() }}) as alias,
-    cast(null as {{ type_json() }}) as all_results
-    {% if var('dbt_artifacts_environment_aware', false) %}
-        , cast(null as {{ type_string() }}) as dbt_cloud_environment_name
-        , cast(null as {{ type_string() }}) as dbt_cloud_environment_type
-    {% endif %}
+    cast(null as {{ type_json() }}) as all_results,
+    cast(null as {{ type_string() }}) as dbt_cloud_environment_name,
+    cast(null as {{ type_string() }}) as dbt_cloud_environment_type
 from dummy_cte
 where 1 = 0
