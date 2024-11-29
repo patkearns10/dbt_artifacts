@@ -22,7 +22,6 @@
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
             nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}, ''),
             nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(15) }}, '')
-            {% endif %}
         from ( values
         {% for source in sources -%}
             (

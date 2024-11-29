@@ -24,8 +24,6 @@
                 {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }},
                 nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(16) }}, ''),
                 nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(17) }}, '')
-
-
             from ( values
             {% for model in models -%}
                     {% set model_copy = model.copy() -%}
