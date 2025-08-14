@@ -18,8 +18,11 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(9) }},
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(10) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(11)) }},
-            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }}
-        from values
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(12) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
+            nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}, ''),
+            nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(15) }}, '')
+        from ( values
         {% for source in sources -%}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
@@ -33,14 +36,24 @@
                 '{{ source.identifier }}', {# identifier #}
                 '{{ source.loaded_at_field | replace("'","\\'") }}', {# loaded_at_field #}
                 '{{ tojson(source.freshness) | replace("'","\\'") }}', {# freshness #}
+                '{{ source.source_name }}'||'|'||'{{ source.database }}'||'|'||'{{ source.schema }}'||'|'||'{{ source.source_name }}'||'|'||'{{ source.loader }}'||'|'||'{{ source.name }}'||'|'||'{{ source.identifier }}'||'|'||'{{ source.loaded_at_field | replace("'","\\'") }}'{% if var('dbt_artifacts_environment_aware', false) %}||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}'||'|'||'{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}'{% endif %}, {# checksum #}
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
                     '{{ tojson(source) | replace("\\", "\\\\") | replace("'", "\\'") | replace('"', '\\"') }}' {# all_results #}
                 {% endif %}
+                {% if var('dbt_artifacts_environment_aware', false) %}
+                    , '{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}' {# dbt_cloud_environment_name #}
+                    , '{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}' {# dbt_cloud_environment_type #}
+                {% else %}
+                    , null
+                    , null
+                {% endif %}
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
+        ) a
+        where $12 not in (select checksum from {{ dbt_artifacts.get_relation('sources') }})
         {% endset %}
         {{ source_values }}
     {% else %} {{ return("") }}

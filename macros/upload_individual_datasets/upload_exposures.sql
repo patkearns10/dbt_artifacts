@@ -20,8 +20,9 @@
             {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(11) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(12)) }},
             {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(13)) }},
-            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(14)) }}
-        from values
+            {{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }},
+            {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(15)) }}
+        from ( values
         {% for exposure in exposures -%}
             (
                 '{{ invocation_id }}', {# command_invocation_id #}
@@ -37,6 +38,7 @@
                 '{{ exposure.package_name }}', {# package_name #}
                 '{{ tojson(exposure.depends_on.nodes) }}', {# depends_on_nodes #}
                 '{{ tojson(exposure.tags) }}', {# tags #}
+                '{{ exposure.unique_id | replace("'","\\'") }}'||'|'||'{{ exposure.name | replace("'","\\'") }}'||'|'||'{{ exposure.type }}'||'|'||'{{ exposure.maturity }}'||'|'||'{{ exposure.package_name }}'||'|'||'{{ tojson(exposure.depends_on.nodes) }}', {# checksum #}
                 {% if var('dbt_artifacts_exclude_all_results', false) %}
                     null
                 {% else %}
@@ -45,6 +47,8 @@
             )
             {%- if not loop.last %},{%- endif %}
         {%- endfor %}
+        ) a
+        where $14 not in (select checksum from {{ dbt_artifacts.get_relation('exposures') }})
         {% endset %}
         {{ exposure_values }}
     {% else %} {{ return("") }}

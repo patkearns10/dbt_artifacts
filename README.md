@@ -174,6 +174,18 @@ vars:
   dbt_artifacts_exclude_all_results: true
 ```
 
+There is additionally a variable, `dbt_artifacts_environment_aware`, which if enabled, will add columns to your dim source models (models, seeds, snapshots, sources, tests) to add environment columns:
+- dbt_cloud_environment_name: The name of the dbt Cloud environment in which dbt is running.
+- dbt_cloud_environment_type: The type of dbt Cloud environment in which dbt is running, e.g. 'dev', 'staging', or 'prod'.
+
+This is helpful if you run in multiple environments, to show how dimensions might change depending on your selected environment.
+
+```
+# dbt_project.yml
+vars:
+  dbt_artifacts_environment_aware: true
+```
+
 ## Upgrading from 1.x to >=2.0.0
 
 If you were using the following variables:

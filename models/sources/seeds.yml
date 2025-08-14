@@ -28,3 +28,7 @@ models:
         description: '{{ doc("alias") }}'
       - name: all_results
         description: '{{ doc("all_results") }}'
+      - name: dbt_cloud_environment_name
+        description: '{{ doc("dbt_cloud_environment_name") }}'
+      - name: dbt_cloud_environment_type
+        description: '{{ doc("dbt_cloud_environment_type") }}'

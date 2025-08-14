@@ -38,10 +38,14 @@
         nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(13) }}, ''),
         nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(14) }}, ''),
         nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(15) }}, ''),
-        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(16)) }},
-        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(17)) }},
-        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(18)) }},
-        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(19)) }}
+        nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(16) }}, ''),
+        nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(17) }}, ''),
+        nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(18) }}, ''),
+        nullif({{ adapter.dispatch('column_identifier', 'dbt_artifacts')(19) }}, ''),
+        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(20)) }},
+        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(21)) }},
+        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(22)) }},
+        {{ adapter.dispatch('parse_json', 'dbt_artifacts')(adapter.dispatch('column_identifier', 'dbt_artifacts')(23)) }}
     from values
     (
         '{{ invocation_id }}', {# command_invocation_id #}
@@ -60,6 +64,10 @@
         '{{ env_var('DBT_CLOUD_RUN_ID', '') }}', {# dbt_cloud_run_id #}
         '{{ env_var('DBT_CLOUD_RUN_REASON_CATEGORY', '') }}', {# dbt_cloud_run_reason_category #}
         '{{ env_var('DBT_CLOUD_RUN_REASON', '') | replace("'","\\'") }}', {# dbt_cloud_run_reason #}
+        '{{ env_var('DBT_CLOUD_ENVIRONMENT_NAME', '') }}', {# dbt_cloud_environment_name #}
+        '{{ env_var('DBT_CLOUD_ENVIRONMENT_TYPE', '') }}', {# dbt_cloud_environment_type #}
+        '{{ env_var('DBT_CLOUD_ENVIRONMENT_ID', '') }}', {# dbt_cloud_environment_id #}
+        '{{ env_var('DBT_CLOUD_ACCOUNT_ID', '') }}', {# dbt_cloud_account_id #}
 
         {% if var('env_vars', none) %}
             {% set env_vars_dict = {} %}
